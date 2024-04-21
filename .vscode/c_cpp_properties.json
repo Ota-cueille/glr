@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "name": "windows-x64",
+            "includePath": [
+                "${workspaceFolder}/include",
+
+                "${workspaceFolder}/vendor/glad/include",
+                "${workspaceFolder}/vendor/glfw3/include",
+                "${workspaceFolder}/vendor/glm/include",
+            ],
+            "defines": [],
+            "windowsSdkVersion": "10.0.22000.0",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "windows-clang-x64",
+            "compilerPath": "C:/Users/viann/dev-tools/llvm/bin/clang++.exe"
+        },
+        {
+            "name": "windows-arm64",
+            "includePath": [
+                "${workspaceFolder}/include",
+
+                "${workspaceFolder}/vendor/glad/include",
+                "${workspaceFolder}/vendor/glfw3/include",
+                "${workspaceFolder}/vendor/glm/include",
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.22000.0",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "windows-clang-arm64"
+        }
+    ],
+    "version": 4
+}
