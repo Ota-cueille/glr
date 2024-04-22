@@ -1,8 +1,28 @@
-: rem Build Script for Windows ARM64
+: rem Build Script for Windows x64
 
-set sdkversion=10.0.22621.0
-set architecture=arm64
-set sdkpath=C:/Program Files (x86)/Windows Kits/10/Lib/%sdkversion%/um/%architecture%
+@echo off
+
+: récupère l'architecture
+
+if "%1"=="architecture" (
+    set architecture=%2
+) else (
+    set architecture=x64
+)
+
+: création dossier de build
+if not exist "./build" mkdir "./build"
+if not exist "./build/debug" mkdir "./build/debug"
+if not exist "./build/debug/obj" mkdir "./build/debug/obj"
+
+set dir=%ProgramFiles(x86)%/Windows Kits/10/Lib/
+
+: récupération de la version du sdk
+for /f "delims=" %%F in ('dir /b "%dir%\*"') do (
+    set version=%%~nxF
+)
+
+set sdkpath=%dir%/%version%/um/%architecture%
 
 : build dependencies
 
