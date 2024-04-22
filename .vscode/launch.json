@@ -5,22 +5,22 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "debug-windows",
+			"name": "windows-debug-x64",
 			"type": "lldb",
 			"request": "launch",
 			"program": "${workspaceFolder}/build/debug/a.exe",
 			"cwd": "${workspaceFolder}",
 			"terminal": "integrated",
-			"preLaunchTask": "windows-build-debug"
+			"preLaunchTask": "windows-build-debug-x64"
 		},
 		{
-			"name": "release-windows",
+			"name": "windows-debug-arm64",
 			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/build/release/a.exe",
+			"program": "${workspaceFolder}/build/debug/a.exe",
 			"cwd": "${workspaceFolder}",
 			"terminal": "integrated",
-			"preLaunchTask": "windows-build-release"
-		},
+			"preLaunchTask": "windows-build-debug-arm64"
+		}
 	]
 }

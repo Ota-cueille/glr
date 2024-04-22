@@ -13,16 +13,22 @@
     ],
     "tasks": [
         {
-            "label": "windows-build-release",
+            "label": "windows-build-debug-x64",
             "group": "build",
             "command": "./scripts/build-windows.bat",
-            "args": ["architecture=${input:architecture}","mode=release"]
+            "args": ["architecture=x64","mode=debug"]
         },
         {
-            "label": "windows-build-debug",
+            "label": "windows-build-release-x64",
             "group": "build",
             "command": "./scripts/build-windows.bat",
-            "args": ["architecture=${input:architecture}","mode=debug"]
-        }
+            "args": ["architecture=arm64","mode=release"]
+        },
+        {
+            "label": "windows-build",
+            "group": "build",
+            "command": "./scripts/build-windows.bat",
+            "args": ["architecture=${input:architecture}","mode=${input:mode}"]
+        },
     ]
 }
