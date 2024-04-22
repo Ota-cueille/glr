@@ -5,56 +5,22 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "debug-windows-x64",
-			"type": "cppdbg",
+			"name": "debug-windows",
+			"type": "lldb",
 			"request": "launch",
 			"program": "${workspaceFolder}/build/debug/a.exe",
-			"args": [],
-			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
-			"environment": [],
-			"externalConsole": false,
-			"MIMode": "gdb",
-			"miDebuggerPath": "gdb.exe",
-			"setupCommands": [
-				{
-					"description": "Enable pretty-printing for gdb",
-					"text": "-enable-pretty-printing",
-					"ignoreFailures": true
-				},
-				{
-					"description": "Set Disassembly Flavor to Intel",
-					"text": "-gdb-set disassembly-flavor intel",
-					"ignoreFailures": true
-				}
-			],
-			"preLaunchTask": "windows-x64-build"
+			"terminal": "integrated",
+			"preLaunchTask": "windows-build-debug"
 		},
 		{
-			"name": "debug-windows-arm64",
-			"type": "cppdbg",
+			"name": "release-windows",
+			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/...",
-			"args": [],
-			"stopAtEntry": false,
+			"program": "${workspaceFolder}/build/release/a.exe",
 			"cwd": "${workspaceFolder}",
-			"environment": [],
-			"externalConsole": false,
-			"MIMode": "gdb",
-			"miDebuggerPath": "/path/to/gdb",
-			"setupCommands": [
-				{
-					"description": "Enable pretty-printing for gdb",
-					"text": "-enable-pretty-printing",
-					"ignoreFailures": true
-				},
-				{
-					"description": "Set Disassembly Flavor to Intel",
-					"text": "-gdb-set disassembly-flavor intel",
-					"ignoreFailures": true
-				}
-			],
-			"preLaunchTask": "windows-arm64-build"
-		}
+			"terminal": "integrated",
+			"preLaunchTask": "windows-build-release"
+		},
 	]
 }
