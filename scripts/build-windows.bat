@@ -7,12 +7,19 @@
 @set architecture=x64
 
 
-@rem check for parameters
-@if "%*" == "" (
-    goto :build
-) else (
-    goto :process_configuration %*
-)
+@rem helper to process input files
+:process_configuration
+
+@if "%1" == "" goto :build
+@if "%2" == "" goto :build
+
+@set %1=%2
+
+@shift
+@shift
+
+@goto :process_configuration %*
+
 
 @rem start build script
 :build
@@ -42,17 +49,3 @@
 @echo -- Build Aborted --
 @echo reason: %reason%
 @exit /b 1
-
-
-@rem helper to process input files
-:process_configuration
-
-@if "%1" == "" goto :build
-@if "%2" == "" goto :build
-
-@set %1=%2
-
-@shift
-@shift
-
-@goto :process_configuration %*

@@ -1,3 +1,6 @@
+@set mode=debug
+@set architecture=x64
+
 :process_configuration
 
 @if "%1" == "" goto :build
@@ -12,12 +15,9 @@
 
 :build
 
-@if "%mode%"=="debug" (
-    set DEBUG_FLAG=-g
-) else (
-    set DEBUG_FLAG=
-)
+@if "%mode%"=="debug" (@set DEBUG_FLAG=-g) else (@set DEBUG_FLAG=)
 
+@echo -- Build GLAD --
 @echo off
 
 : build glad
