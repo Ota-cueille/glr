@@ -2,7 +2,7 @@
 
 set sdkversion=10.0.22621.0
 set architecture=arm64
-set sdkpath=C:\Program Files (x86)\Windows Kits\10\Lib\%sdkversion%\um\%architecture%
+set sdkpath=C:/Program Files (x86)/Windows Kits/10/Lib/%sdkversion%/um/%architecture%
 
 : build dependencies
 
