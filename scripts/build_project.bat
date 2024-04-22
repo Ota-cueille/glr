@@ -1,3 +1,4 @@
+@setlocal
 @set mode=debug
 @set architecture=x64
 
@@ -38,3 +39,4 @@ clang++ %DEBUG_FLAG% -std=c++20 -c source/main.cpp -o build/%mode%/obj/main.o -I
 clang++ %DEBUG_FLAG% -std=c++20 -o build/%mode%/a.exe build/%mode%/obj/*.o "%sdkpath%/User32.Lib" "%sdkpath%/Gdi32.Lib" "%sdkpath%/shell32.lib"
 
 @echo on
+@endlocal

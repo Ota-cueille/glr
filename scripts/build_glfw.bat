@@ -1,3 +1,4 @@
+@setlocal
 @set mode=debug
 @set architecture=x64
 
@@ -48,3 +49,4 @@ clang %DEBUG_FLAG% -c vendor/glfw3/src/win32_window.c -o build/%mode%/obj/glfw-w
 clang %DEBUG_FLAG% -c vendor/glfw3/src/wgl_context.c -o build/%mode%/obj/glfw-wgl_context.o -I vendor/glfw3/include -D_GLFW_WIN32 -D_CRT_SECURE_NO_WARNINGS
 
 @echo on
+@endlocal

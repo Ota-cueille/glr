@@ -1,3 +1,4 @@
+@setlocal
 @set mode=debug
 @set architecture=x64
 
@@ -24,3 +25,4 @@
 clang %DEBUG_FLAG% -c vendor/glad/src/glad.c -o build/%mode%/obj/glad.o -I vendor/glad/include/
 
 @echo on
+@endlocal
