@@ -9,6 +9,15 @@
                 "x64",
                 "arm64"
             ]
+        },
+        {
+            "id": "mode",
+            "description": "Choose your build mode",
+            "type": "pickString",
+            "options": [
+                "debug",
+                "release"
+            ]
         }
     ],
     "tasks": [
