@@ -12,5 +12,15 @@
 
 :build
 
+@if "%mode%"=="debug" (
+    set DEBUG_FLAG=-g
+) else (
+    set DEBUG_FLAG=
+)
+
+@echo off
+
 : build glad
-clang -g -c vendor/glad/src/glad.c -o build/%mode%/obj/glad.o -I vendor/glad/include/
+clang %DEBUG_FLAG% -c vendor/glad/src/glad.c -o build/%mode%/obj/glad.o -I vendor/glad/include/
+
+@echo on
