@@ -19,10 +19,10 @@
             "args": ["architecture=x64","mode=debug"]
         },
         {
-            "label": "windows-build-release-x64",
+            "label": "windows-build-debug-arm64",
             "group": "build",
             "command": "./scripts/build-windows.bat",
-            "args": ["architecture=arm64","mode=release"]
+            "args": ["architecture=arm64","mode=debug"]
         },
         {
             "label": "windows-build",
