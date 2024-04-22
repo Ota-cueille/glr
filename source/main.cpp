@@ -16,7 +16,7 @@ int main(int ac, char* av[]) {
 		return -1;
 	}
 
-	GLFWwindow* window = glfwCreateWindow(100, 100, "window", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(640, 480, "window", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 
