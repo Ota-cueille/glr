@@ -1,4 +1,8 @@
-: Build Script for Windows x64
+: rem Build Script for Windows x64
+
+set sdkversion=10.0.22000.0
+set architecture=x64
+set sdkpath=C:\Program Files (x86)\Windows Kits\10\Lib\%sdkversion%\um\%architecture%
 
 : build dependencies
 
@@ -38,4 +42,4 @@ clang -g -c vendor/glfw3/src/wgl_context.c -o build/debug/obj/glfw-wgl_context.o
 clang++ -g -std=c++20 -c source/main.cpp -o build/debug/obj/main.o -I include/ -I vendor/glad/include/ -I vendor/glfw3/include -I vendor/glm/include
 
 : build final executable
-clang++ -g -std=c++20 -o build/debug/a.exe build/debug/obj/*.o "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x64\User32.Lib" "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x64\Gdi32.Lib" "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x64\shell32.lib"
+clang++ -g -std=c++20 -o build/debug/a.exe build/debug/obj/*.o "%sdkpath%\User32.Lib" "%sdkpath%\Gdi32.Lib" "%sdkpath%\shell32.lib"
