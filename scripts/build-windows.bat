@@ -23,9 +23,9 @@
 @echo     architecture = %architecture%
 @echo }
 
-if not exist "./build" mkdir "./build"
-if not exist "./build/%mode%" mkdir "./build/%mode%"
-if not exist "./build/%mode%/obj" mkdir "./build/%mode%/obj"
+@if not exist "./build" mkdir "./build"
+@if not exist "./build/%mode%" mkdir "./build/%mode%"
+@if not exist "./build/%mode%/obj" mkdir "./build/%mode%/obj"
 
 @call cmd /c "%CD%/scripts/build_glad.bat architecture=%architecture% mode=%mode%"
 @call cmd /c "%CD%/scripts/build_glfw.bat architecture=%architecture% mode=%mode%"
