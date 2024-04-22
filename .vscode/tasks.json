@@ -1,17 +1,34 @@
 {
-	// See https://go.microsoft.com/fwlink/?LinkId=733558
-	// for the documentation about the tasks.json format
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "windows-x64-build",
-			"group": "build",
-			"command": "./scripts/build-windows-x64.bat"
-		},
-		{
-			"label": "windows-arm64-build",
-			"group": "build",
-			"command": "./scripts/build-windows-arm64.bat"
-		}
-	]
+    "version": "2.0.0",
+    "inputs": [
+        {
+            "id": "architecture",
+            "description": "Choose your targeted architecture",
+            "type": "pickString",
+            "options": [
+                "x64",
+                "arm64"
+            ]
+        }
+    ],
+    "tasks": [
+        {
+            "label": "windows-build-debug-x64",
+            "group": "build",
+            "command": "./scripts/build-windows.bat",
+            "args": ["architecture=x64","mode=debug"]
+        },
+        {
+            "label": "windows-build-debug-arm64",
+            "group": "build",
+            "command": "./scripts/build-windows.bat",
+            "args": ["architecture=arm64","mode=debug"]
+        },
+        {
+            "label": "windows-build",
+            "group": "build",
+            "command": "./scripts/build-windows.bat",
+            "args": ["architecture=${input:architecture}","mode=${input:mode}"]
+        },
+    ]
 }
