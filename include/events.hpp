@@ -5,10 +5,15 @@
 
 namespace event {
 
-    enum class type { close, resize, refresh, size };
+    enum class type { close, resize, refresh, keypress, size };
     
     struct Event {
         type t;
+        union {
+            struct{
+                int key, scancode, action, mods;
+            } keypress;
+        };
         union {
             // resize events data
             struct {
