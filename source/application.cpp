@@ -9,7 +9,7 @@
 static void close_event_handler  (GLFWwindow* window);
 static void resize_event_handler (GLFWwindow* window, i32 width, i32 height);
 static void refresh_event_handler(GLFWwindow* window);
-static void key_callback_handler(GLFWwindow* window, int key, int scancode, int action, int mods);
+static void key_event_handler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 namespace application {
 
@@ -52,7 +52,7 @@ namespace application {
         glfwSetWindowRefreshCallback  (app.window, refresh_event_handler);
         glfwSetFramebufferSizeCallback(app.window, resize_event_handler);
 
-        glfwSetKeyCallback(app.window, key_callback_handler);
+        glfwSetKeyCallback(app.window, key_event_handler);
 
  
         event::on(event::type::resize, [] (event::Event const& e) -> void {
@@ -111,15 +111,15 @@ void close_event_handler(GLFWwindow* window) {
     event::flush(event::type::close, e);
 }
 
-void key_callback_handler(GLFWwindow* window, int key, int scancode, int action, int mods) {
+void key_event_handler(GLFWwindow* window, int key, int scancode, int action, int mods) {
     event::Event e {
         .t = event::type::close,
-        .keypress = {
-            .key = key,
+        .key = {
+            .keycode = key,
             .scancode = scancode,
-            .action = action,
-            .mods = mods
+            .action = cast(event::key::action,action),
+            .mods = cast(event::key::mods,mods)
         }
     };
-    event::flush(event::type::keypress, e);
+    event::flush(event::type::key, e);
 }

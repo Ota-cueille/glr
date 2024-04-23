@@ -27,8 +27,8 @@ int main(int ac, char* av[]) {
 		application::swap_buffers();
 	});
 
-	event::on(event::type::keypress, [] (const event::Event& e) -> void {
-		printf("%d",e.keypress.key);
+	event::on(event::type::key, [] (const event::Event& e) -> void {
+		printf("%d",e.key.keycode);
 	});
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
