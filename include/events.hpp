@@ -1,3 +1,4 @@
+#pragma once
 #include "utils.hpp"
 
 #include <functional>
@@ -11,7 +12,7 @@ namespace event {
         union {
             // resize events data
             struct {
-                u32 height, width;
+                u32 width, height;
             } resize;
         };
     };
@@ -19,8 +20,6 @@ namespace event {
     using EventCallback = std::function<void(Event const&)>;
 
     void on(type t, EventCallback const& callback);
-
-    void poll();
-    void initialize(void* window);
+    void flush(type t, Event const& event);
 
 } // namespace event

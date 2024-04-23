@@ -1,7 +1,7 @@
 #include <cstdio>
 
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 #include "utils.hpp"
@@ -82,7 +82,7 @@ int main(int ac, char* av[]) {
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		application::swap_buffers();
-		event::poll();
+		application::poll_events();
 	}
 
 	application::terminate();

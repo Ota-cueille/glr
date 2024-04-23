@@ -6,6 +6,10 @@
 #include <cstdlib>
 #include <cassert>
 
+static void close_event_handler  (GLFWwindow* window);
+static void resize_event_handler (GLFWwindow* window, i32 width, i32 height);
+static void refresh_event_handler(GLFWwindow* window);
+
 namespace application {
 
     struct ApplicationState {
@@ -43,8 +47,10 @@ namespace application {
         glfwMakeContextCurrent(app.window);
         glfwSwapInterval(1); // set vsync
 
-        event::initialize(app.window);
-  
+        glfwSetWindowCloseCallback    (app.window, close_event_handler);
+        glfwSetWindowRefreshCallback  (app.window, refresh_event_handler);
+        glfwSetFramebufferSizeCallback(app.window, resize_event_handler);
+
         event::on(event::type::resize, [] (event::Event const& e) -> void {
             app.width = cast(u32, e.resize.width);
             app.height = cast(u32, e.resize.height);
@@ -65,6 +71,8 @@ namespace application {
         glfwSwapBuffers(app.window);
     }
 
+    void poll_events() { glfwPollEvents(); }
+
     namespace state {
 
         bool const& running = app.running;
@@ -73,3 +81,28 @@ namespace application {
     } // namespace state
 
 } // namespace application
+
+void refresh_event_handler(GLFWwindow* window) {
+    event::Event e {
+        .t = event::type::refresh
+    };
+    event::flush(event::type::refresh, e);
+}
+
+void resize_event_handler(GLFWwindow* window, i32 width, i32 height) {
+    event::Event e {
+        .t = event::type::resize,
+        .resize = {
+            .width = cast(u32, width),
+            .height = cast(u32, height),
+        },
+    };
+    event::flush(event::type::resize, e);
+}
+
+void close_event_handler(GLFWwindow* window) {
+    event::Event e {
+        .t = event::type::close
+    };
+    event::flush(event::type::close, e);
+}
