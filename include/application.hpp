@@ -7,6 +7,13 @@ namespace application {
 
     void initialize(const char* name, u32 width = 640, u32 height = 480);
     void terminate();
-    void swapBuffers();
+    void swap_buffers();
+
+    namespace state {
+
+        extern bool const& running;
+        extern u32 const& width, &height;
+
+    } // namespace state
 
 } // namespace application

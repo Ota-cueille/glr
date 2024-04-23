@@ -8,46 +8,68 @@
 
 namespace application {
 
-    struct ApplicationData {
-        const char* name;
-        u32 width, height;
+    struct ApplicationState {
+        const char* name = nullptr;
+        u32 width = 0, height = 0;
 
-        GLFWwindow* window;
+        GLFWwindow* window = nullptr;
+
+        bool initialized = false, running = false;
     };
-
-    static bool initialized = false;
-    static ApplicationData data;
+    static ApplicationState app;
 
     void initialize(const char* name, u32 width, u32 height) {
-        assert(!initialized && "Assertion Failed : Your application have already been initilized !");
-        initialized = true;
+        assert(!app.initialized && "Assertion Failed : Your application have already been initilized !");
 
-        data.name = name;
-        data.width = width;
-        data.height = height;
+        app.initialized = true;
+        app.running = true;
+
+        app.name = name;
+        app.width = width;
+        app.height = height;
 
         if(!glfwInit()) {
-            fprintf(stderr, "");
+            fprintf(stderr, "Error : glfwInit() failed !\n");
             exit(-1);
         }
 
-        data.window = glfwCreateWindow(width, height, name, nullptr, nullptr);
-        if(data.window == nullptr) {
+        app.window = glfwCreateWindow(width, height, name, nullptr, nullptr);
+        if(app.window == nullptr) {
             glfwTerminate();
-            fprintf(stderr, "");
+            fprintf(stderr, "Error : glfwCreateWindow failed !\n");
             exit(-1);
         }
-        events::initialize(data.window);
 
-        glfwMakeContextCurrent(data.window);
+        glfwMakeContextCurrent(app.window);
         glfwSwapInterval(1); // set vsync
 
+        event::initialize(app.window);
+  
+        event::on(event::type::resize, [] (event::Event const& e) -> void {
+            app.width = cast(u32, e.resize.width);
+            app.height = cast(u32, e.resize.height);
+        });
+
+        event::on(event::type::close, [] (event::Event const& e) -> void {
+            app.running = false;
+        });
     }
 
-    void terminate() {}
-
-    void swapBuffers(){
-        glfwSwapBuffers(data.window);
+    void terminate() {
+        assert(app.initialized && "Assertion Failed : Your application have not been initialized !");
+        glfwTerminate();
     }
+
+    void swap_buffers() {
+        assert(app.initialized && "Assertion Failed : Your application have not been initialized !");
+        glfwSwapBuffers(app.window);
+    }
+
+    namespace state {
+
+        bool const& running = app.running;
+        u32 const& width = app.width, &height = app.height;
+
+    } // namespace state
 
 } // namespace application

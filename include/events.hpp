@@ -1,25 +1,26 @@
-
-#include <functional>
 #include "utils.hpp"
 
-namespace events {
-    enum class types {
-        click,close,resize,refresh,hover,size
-    };
+#include <functional>
+
+namespace event {
+
+    enum class type { close, resize, refresh, size };
     
     struct Event {
-        types type;
-        i32 height;
-        i32 width;
+        type t;
+        union {
+            // resize events data
+            struct {
+                u32 height, width;
+            } resize;
+        };
     };
 
-    using EventCallback = std::function<void(const Event&)>;
+    using EventCallback = std::function<void(Event const&)>;
 
-    void on(types eventType,const std::function<void(const Event&)>& callback);
-
-    template <types eventType>
-    void exec(Event const & event);
+    void on(type t, EventCallback const& callback);
 
     void poll();
-    void initialize(void * window);
-}
+    void initialize(void* window);
+
+} // namespace event
