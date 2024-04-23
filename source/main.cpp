@@ -27,6 +27,10 @@ int main(int ac, char* av[]) {
 		application::swap_buffers();
 	});
 
+	event::on(event::type::key, [] (const event::Event& e) -> void {
+		printf("%d",e.key.keycode);
+	});
+
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
 	glEnable(GL_DEBUG_OUTPUT);
