@@ -7,9 +7,30 @@
 
 #include "utils.hpp"
 
-bool running = true;
+struct {
+	bool running = true;
+	struct {
+		u32 width, height;
+	} window;
+} state;
 
-void on_window_close(GLFWwindow* window) { running = false; }
+struct {
+	u32 vao = 0, vbo = 0;
+	u32 triangle_program = 0;
+} renderer;
+
+void on_window_close(GLFWwindow* window) { state.running = false; }
+void on_window_resize(GLFWwindow* window, i32 width, i32 height) {
+	state.window.width = cast(u32, width);
+	state.window.height = cast(u32, height);
+	// glViewport(-width/2, -height/2, width/2, height/2);
+}
+void on_window_refresh(GLFWwindow* window) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindVertexArray(renderer.vao);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glfwSwapBuffers(window);
+}
 
 static void gl_error(u32 source, u32 type, u32 id, u32 severity, i32 length, const char *message, const void*);
 static u32 compile_shader(const char* path, u32 type);
@@ -25,6 +46,8 @@ int main(int ac, char* av[]) {
 	glfwSwapInterval(1);
 
 	glfwSetWindowCloseCallback(window, on_window_close);
+	glfwSetFramebufferSizeCallback(window, on_window_resize);
+	glfwSetWindowRefreshCallback(window, on_window_refresh);
 
 	/* INIT OPENGL */
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -37,7 +60,7 @@ int main(int ac, char* av[]) {
 
 	glEnable(GL_DEPTH_TEST);
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.9f, 0.85f, 0.8f, 1.0f);
 
 	/* TRIANGLE */
 
@@ -49,40 +72,40 @@ int main(int ac, char* av[]) {
 	};
 
 	/* 2. OPENGL : VAO, VBO */
-	u32 vao = 0;
-	glCreateVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	glCreateVertexArrays(1, &renderer.vao);
+	glBindVertexArray(renderer.vao);
 
-	u32 vbo = 0;
-	glCreateBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glCreateBuffers(1, &renderer.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), cast(void*, vertices), GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), cast(const void*, 0));
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), cast(const void*, 0));
 
 	glBindVertexArray(0);
 
 	/* 3. TRIANGLE SHADER */
-	u32 triangle_program = glCreateProgram();
+	renderer.triangle_program = glCreateProgram();
 	
 	u32 triangle_vertex_shader = compile_shader("./assets/shader/triangle.vert", GL_VERTEX_SHADER);
-	glAttachShader(triangle_program, triangle_vertex_shader);
+	glAttachShader(renderer.triangle_program, triangle_vertex_shader);
 
 	u32 triangle_fragment_shader = compile_shader("./assets/shader/triangle.frag", GL_FRAGMENT_SHADER);
-	glAttachShader(triangle_program, triangle_fragment_shader);
+	glAttachShader(renderer.triangle_program, triangle_fragment_shader);
 
-	glLinkProgram(triangle_program);
+	glLinkProgram(renderer.triangle_program);
 	glDeleteShader(triangle_vertex_shader);
 	glDeleteShader(triangle_fragment_shader);
-	glUseProgram(triangle_program);
 
-	while(running) {
+	while(state.running) {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glUseProgram(renderer.triangle_program);
+		glBindVertexArray(renderer.vao);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
-		glBindVertexArray(vao);
-		glDrawArrays(GL_TRIANGLES, 0, 1);
 	}
 
 	glfwTerminate();
@@ -126,7 +149,7 @@ void gl_error(u32 source, u32 type, u32 id, u32 severity, i32 length, const char
 
 u32 compile_shader(const char* path, u32 type) {
 	char _[4096] = { '\0' }; char* buf = _;
-	FILE* shader_source_file = fopen(path, "r");
+	FILE* shader_source_file = fopen(path, "rb");
 	fread(buf, sizeof(char), 4096, shader_source_file);
 	fclose(shader_source_file);
 
