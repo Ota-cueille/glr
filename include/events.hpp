@@ -18,8 +18,8 @@ namespace event {
             // key events data
             struct{
                 int keycode, scancode;
-                event::key::action action;
-                event::key::mods mods;               
+                key::action action;
+                key::mods mods;               
             } key;
 
             // resize events data
