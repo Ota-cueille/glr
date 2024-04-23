@@ -1,55 +1,32 @@
 #include <cstdio>
-#include <iostream>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 #include "utils.hpp"
-
-struct {
-	bool running = true;
-	struct {
-		u32 width, height;
-	} window;
-} state;
+#include "events.hpp"
+#include "application.hpp"
 
 struct {
 	u32 vao = 0, vbo = 0;
 	u32 triangle_program = 0;
 } renderer;
 
-void on_window_close(GLFWwindow* window) { state.running = false; }
-void on_window_resize(GLFWwindow* window, i32 width, i32 height) {
-	state.window.width = cast(u32, width);
-	state.window.height = cast(u32, height);
-	// glViewport(-width/2, -height/2, width/2, height/2);
-}
-void on_window_refresh(GLFWwindow* window) {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindVertexArray(renderer.vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glfwSwapBuffers(window);
-}
-
 static void gl_error(u32 source, u32 type, u32 id, u32 severity, i32 length, const char *message, const void*);
 static u32 compile_shader(const char* path, u32 type);
 
 int main(int ac, char* av[]) {
-	/* Initialize rendering context */
-	if(!glfwInit()) {
-		return -1;
-	}
-
-	GLFWwindow* window = glfwCreateWindow(640, 480, "window", nullptr, nullptr);
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);
-
-	glfwSetWindowCloseCallback(window, on_window_close);
-	glfwSetFramebufferSizeCallback(window, on_window_resize);
-	glfwSetWindowRefreshCallback(window, on_window_refresh);
-
 	/* INIT OPENGL */
+	application::initialize("window");
+
+	event::on(event::type::refresh, [] (const event::Event& e) -> void {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glBindVertexArray(renderer.vao);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		application::swap_buffers();
+	});
+
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
 	glEnable(GL_DEBUG_OUTPUT);
@@ -97,19 +74,31 @@ int main(int ac, char* av[]) {
 	glDeleteShader(triangle_vertex_shader);
 	glDeleteShader(triangle_fragment_shader);
 
-	while(state.running) {
+	while(application::state::running) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glUseProgram(renderer.triangle_program);
 		glBindVertexArray(renderer.vao);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		application::swap_buffers();
+		application::poll_events();
 	}
 
-	glfwTerminate();
+	application::terminate();
 	return 0;
+}
+
+u32 compile_shader(const char* path, u32 type) {
+	char _[4096] = { '\0' }; char* buf = _;
+	FILE* shader_source_file = fopen(path, "rb");
+	fread(buf, sizeof(char), 4096, shader_source_file);
+	fclose(shader_source_file);
+
+	u32 id = glCreateShader(type);
+	glShaderSource(id, 1, &buf, nullptr);
+	glCompileShader(id);
+	return id;
 }
 
 void gl_error(u32 source, u32 type, u32 id, u32 severity, i32 length, const char *message, const void*) {
@@ -145,16 +134,4 @@ void gl_error(u32 source, u32 type, u32 id, u32 severity, i32 length, const char
         case GL_DEBUG_SEVERITY_NOTIFICATION: severity_name = "notification"; break;
     }
     fprintf(stderr, "GL ERROR[source: %s, type: %s, severity: %s]: %s\n", source_name, type_name, severity_name, message);
-}
-
-u32 compile_shader(const char* path, u32 type) {
-	char _[4096] = { '\0' }; char* buf = _;
-	FILE* shader_source_file = fopen(path, "rb");
-	fread(buf, sizeof(char), 4096, shader_source_file);
-	fclose(shader_source_file);
-
-	u32 id = glCreateShader(type);
-	glShaderSource(id, 1, &buf, nullptr);
-	glCompileShader(id);
-	return id;
 }
