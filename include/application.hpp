@@ -8,7 +8,7 @@ namespace application {
     void initialize(const char* name, u32 width = 640, u32 height = 480);
     void terminate();
     void swap_buffers();
-    void poll();
+    void poll_events();
 
     namespace state {
 

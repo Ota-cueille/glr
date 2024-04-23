@@ -82,7 +82,7 @@ int main(int ac, char* av[]) {
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		application::swap_buffers();
-		application::poll();
+		application::poll_events();
 	}
 
 	application::terminate();

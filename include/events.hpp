@@ -20,8 +20,6 @@ namespace event {
     using EventCallback = std::function<void(Event const&)>;
 
     void on(type t, EventCallback const& callback);
-
-    void exec(type t, Event const& event);
-    void initialize(void* window);
+    void flush(type t, Event const& event);
 
 } // namespace event

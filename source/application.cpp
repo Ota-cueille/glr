@@ -48,8 +48,8 @@ namespace application {
         glfwSwapInterval(1); // set vsync
 
         glfwSetWindowCloseCallback    (app.window, close_event_handler);
-        glfwSetFramebufferSizeCallback(app.window, resize_event_handler);
         glfwSetWindowRefreshCallback  (app.window, refresh_event_handler);
+        glfwSetFramebufferSizeCallback(app.window, resize_event_handler);
 
         event::on(event::type::resize, [] (event::Event const& e) -> void {
             app.width = cast(u32, e.resize.width);
@@ -61,8 +61,6 @@ namespace application {
         });
     }
 
-    void poll() { glfwPollEvents(); }
-
     void terminate() {
         assert(app.initialized && "Assertion Failed : Your application have not been initialized !");
         glfwTerminate();
@@ -72,6 +70,8 @@ namespace application {
         assert(app.initialized && "Assertion Failed : Your application have not been initialized !");
         glfwSwapBuffers(app.window);
     }
+
+    void poll_events() { glfwPollEvents(); }
 
     namespace state {
 
@@ -86,7 +86,7 @@ void refresh_event_handler(GLFWwindow* window) {
     event::Event e {
         .t = event::type::refresh
     };
-    event::exec(event::type::refresh,e);
+    event::flush(event::type::refresh, e);
 }
 
 void resize_event_handler(GLFWwindow* window, i32 width, i32 height) {
@@ -97,12 +97,12 @@ void resize_event_handler(GLFWwindow* window, i32 width, i32 height) {
             .height = cast(u32, height),
         },
     };
-    event::exec(event::type::resize,e);
+    event::flush(event::type::resize, e);
 }
 
 void close_event_handler(GLFWwindow* window) {
     event::Event e {
         .t = event::type::close
     };
-    event::exec(event::type::close,e);
+    event::flush(event::type::close, e);
 }

@@ -7,13 +7,13 @@ namespace event {
 
     static std::array<std::list<EventCallback>, cast(u64, type::size)> callbacks;
 
-    void on(type t, std::function<void(Event const&)> const& callback) {
+    void on(type t, EventCallback const& callback) {
         u64 i = cast(u64, t);
         callbacks[i].push_back(callback);
     }
 
-    void exec(type t, Event const& event) {
+    void flush(type t, Event const& event) {
         for (auto const& callback : callbacks[cast(u64, t)]) callback(event);
     }
 
-} // namespace events
+} // namespace event
