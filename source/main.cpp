@@ -23,8 +23,6 @@ struct {
 } renderer;
 
 void on_window_close(events::Event event) { 
-	std::cout << "coucou";
-	
 	state.running = false;
 }
 
