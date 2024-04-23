@@ -7,6 +7,9 @@
 
 #include "utils.hpp"
 
+#include "application.hpp"
+
+
 struct {
 	bool running = true;
 	struct {
@@ -19,17 +22,23 @@ struct {
 	u32 triangle_program = 0;
 } renderer;
 
-void on_window_close(GLFWwindow* window) { state.running = false; }
-void on_window_resize(GLFWwindow* window, i32 width, i32 height) {
-	state.window.width = cast(u32, width);
-	state.window.height = cast(u32, height);
+void on_window_close(events::Event event) { 
+	std::cout << "coucou";
+	
+	state.running = false;
+}
+
+void on_window_resize(events::Event event) {
+	state.window.width = cast(u32, event.width);
+	state.window.height = cast(u32, event.height);
 	// glViewport(-width/2, -height/2, width/2, height/2);
 }
-void on_window_refresh(GLFWwindow* window) {
+
+void on_window_refresh(events::Event event) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindVertexArray(renderer.vao);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glfwSwapBuffers(window);
+	application::swapBuffers();
 }
 
 static void gl_error(u32 source, u32 type, u32 id, u32 severity, i32 length, const char *message, const void*);
@@ -37,17 +46,16 @@ static u32 compile_shader(const char* path, u32 type);
 
 int main(int ac, char* av[]) {
 	/* Initialize rendering context */
+
+	events::on(events::types::resize,on_window_resize);
+	events::on(events::types::close,on_window_close);
+	events::on(events::types::refresh,on_window_refresh);
+
+	application::initialize("window",640, 480);
+
 	if(!glfwInit()) {
 		return -1;
 	}
-
-	GLFWwindow* window = glfwCreateWindow(640, 480, "window", nullptr, nullptr);
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);
-
-	glfwSetWindowCloseCallback(window, on_window_close);
-	glfwSetFramebufferSizeCallback(window, on_window_resize);
-	glfwSetWindowRefreshCallback(window, on_window_refresh);
 
 	/* INIT OPENGL */
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -104,7 +112,7 @@ int main(int ac, char* av[]) {
 		glBindVertexArray(renderer.vao);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
-		glfwSwapBuffers(window);
+		application::swapBuffers();
 		glfwPollEvents();
 	}
 
