@@ -34,8 +34,8 @@ namespace event {
             num     = 0b00100000, // 32
         };
 
-        mods operator|(mods mod1, mods mod2) noexcept { return cast(mods, cast(u8, mod1) | cast(u8, mod2)); }
-        bool operator&(mods mod1, mods mod2) noexcept { return cast(bool, cast(u8, mod1) & cast(u8, mod2)); }
+        mods operator|(mods mod1, mods mod2) noexcept;
+        bool operator&(mods mod1, mods mod2) noexcept;
     }
 
     struct Event {
