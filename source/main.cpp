@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cctype>
 
 #include <glm/glm.hpp>
 
@@ -18,8 +19,9 @@ int main(int ac, char* av[]) {
 		application::swap_buffers();
 	});
 
-	event::on(event::type::key, [] (const event::Event& e) -> void {
-		printf("%d",e.key.keycode);
+	event::on(event::type::character, [] (const event::Event& e) -> void {
+		// assumes ascii only
+		printf("> key pressed %c\n", cast(u8, e.character.unicode));
 	});
 
 	while(application::state::running) {
