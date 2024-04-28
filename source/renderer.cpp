@@ -18,13 +18,28 @@ namespace renderer {
 	void initialize() {
 		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
+        const GLubyte *renderer = glGetString( GL_RENDERER ); 
+        const GLubyte *vendor = glGetString( GL_VENDOR ); 
+        const GLubyte *version = glGetString( GL_VERSION ); 
+        const GLubyte *glslVersion = 
+        glGetString( GL_SHADING_LANGUAGE_VERSION ); 
+        
+        GLint major, minor; 
+        glGetIntegerv(GL_MAJOR_VERSION, &major); 
+        glGetIntegerv(GL_MINOR_VERSION, &minor);
+        
 		glEnable(GL_DEBUG_OUTPUT);
-		glDebugMessageCallback((GLDEBUGPROC)gl_error, nullptr);
+
+        if ( major >= 4 && minor >= 3 ) {
+		    glDebugMessageCallback((GLDEBUGPROC)gl_error, nullptr);
+        } 
 
 		glEnable(GL_BLEND);
+
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glEnable(GL_DEPTH_TEST);
+
 	}
 
 	void terminate() {}
