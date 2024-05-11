@@ -1,5 +1,4 @@
 #include <cstdio>
-#include <cctype>
 
 #include <glm/glm.hpp>
 
@@ -9,13 +8,13 @@
 #include "renderer.hpp"
 
 int main(int ac, char* av[]) {
-	/* INIT OPENGL */
 	application::initialize("window");
 	renderer::initialize();
 	renderer::set_clear_color(0.9f, 0.85f, 0.8f);
 
 	event::on(event::type::refresh, [] (const event::Event& e) -> void {
 		renderer::clear();
+		renderer::draw();
 		application::swap_buffers();
 	});
 
@@ -26,6 +25,7 @@ int main(int ac, char* av[]) {
 
 	while(application::state::running) {
 		renderer::clear();
+		renderer::draw();
 
 		application::swap_buffers();
 		application::poll_events();

@@ -44,6 +44,8 @@ namespace renderer {
 	void set_clear_color(f32 r, f32 g, f32 b, f32 a) { glClearColor(r, g, b, a); }
 	void set_clear_color(u8 r, u8 g, u8 b, u8 a) { glClearColor(r/255.0f, g/255.0f, b/255.0f, a/255.0f); }
 
+    void draw() {}
+
 } // namespace renderer
 
 void gl_error(u32 source, u32 type, u32 id, u32 severity, i32 length, const char *message, const void*) {
