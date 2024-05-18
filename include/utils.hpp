@@ -1,6 +1,7 @@
 #pragma once
 
 #define cast(T, val) static_cast<T>(val)
+#define as(T, val) reinterpret_cast<T>(val)
 
 using u8 = unsigned char;
 using u16 = unsigned short;

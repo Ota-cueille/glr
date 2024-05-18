@@ -14,4 +14,6 @@ namespace renderer {
 	void set_clear_color(f32 r, f32 g, f32 b, f32 a = 1.0f);
 	void set_clear_color(u8 r, u8 g, u8 b, u8 a = 255);
 
+	void draw();
+
 } // namespace renderer
