@@ -1,9 +1,11 @@
 #include "renderer.hpp"
 
-
 #include <cstdio>
+#include <cstdlib>
+#include <cstddef>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 /* Ce serait sympa d'abstraire nous même l'initialisation d'opengl */
 // typedef void (*GLFWglproc)(void);
@@ -12,6 +14,7 @@
 /* --------------------------------------------------------------- */
 
 static void gl_error(u32 source, u32 type, u32 id, u32 severity, i32 length, const char *message, const void*);
+static u32 compile_shader(const char* path, u32 type);
 
 namespace renderer {
 
@@ -43,6 +46,8 @@ namespace renderer {
 
 	void set_clear_color(f32 r, f32 g, f32 b, f32 a) { glClearColor(r, g, b, a); }
 	void set_clear_color(u8 r, u8 g, u8 b, u8 a) { glClearColor(r/255.0f, g/255.0f, b/255.0f, a/255.0f); }
+
+    void draw() {}
 
 } // namespace renderer
 
@@ -79,4 +84,16 @@ void gl_error(u32 source, u32 type, u32 id, u32 severity, i32 length, const char
         case GL_DEBUG_SEVERITY_NOTIFICATION: severity_name = "notification"; break;
     }
     fprintf(stderr, "GL ERROR[source: %s, type: %s, severity: %s]: %s\n", source_name, type_name, severity_name, message);
+}
+
+u32 compile_shader(const char* path, u32 type) {
+	char _[4096] = { '\0' }; char* buf = _;
+	FILE* shader_source_file = fopen(path, "r");
+	fread(buf, sizeof(char), 4096, shader_source_file);
+	fclose(shader_source_file);
+
+	u32 id = glCreateShader(type);
+	glShaderSource(id, 1, &buf, nullptr);
+	glCompileShader(id);
+	return id;
 }
