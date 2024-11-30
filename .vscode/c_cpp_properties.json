@@ -7,14 +7,13 @@
 
                 "${workspaceFolder}/vendor/glad/include",
                 "${workspaceFolder}/vendor/glfw3/include",
-                "${workspaceFolder}/vendor/glm/include",
+                "${workspaceFolder}/vendor/glm/include"
             ],
             "defines": [],
             "windowsSdkVersion": "10.0.22000.0",
             "cStandard": "c23",
             "cppStandard": "c++23",
-            "intelliSenseMode": "windows-clang-x64",
-            "compilerPath": "C:/Users/viann/dev-tools/llvm/bin/clang++.exe"
+            "intelliSenseMode": "windows-clang-x64"
         },
         {
             "name": "windows-arm64",
@@ -23,13 +22,9 @@
 
                 "${workspaceFolder}/vendor/glad/include",
                 "${workspaceFolder}/vendor/glfw3/include",
-                "${workspaceFolder}/vendor/glm/include",
+                "${workspaceFolder}/vendor/glm/include"
             ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
+            "defines": [],
             "windowsSdkVersion": "10.0.22000.0",
             "cStandard": "c23",
             "cppStandard": "c++23",
